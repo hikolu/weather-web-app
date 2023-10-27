@@ -49,7 +49,6 @@ public class LiveWeatherService {
         return convert(response);
     }
 
-    // TODO add custom exception and handling
     private CurrentWeather convert(ResponseEntity<String> response) {
 
         try {
