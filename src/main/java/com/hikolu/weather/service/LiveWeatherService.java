@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hikolu.weather.entity.CurrentWeather;
+import com.hikolu.weather.exception.RestTemplateResponseErrorHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,10 @@ import java.net.URI;
 public class LiveWeatherService {
 
     // define field for our api url
-    private static final String WEATHER_URL = "http://api.openweather.org/data/2.5/forecast?q={city},{country}&APPID={key}&units=metric";
+    private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q={city},{country}&appid={key}&units=metric";
 
-    // set the value for apiKey from application.properties
-    @Value("${api.openweathermap.key")
+//     set the value for apiKey from application.properties
+    @Value("${api.openweathermap.key}")
     private String apiKey;
 
     // define fields for RestTemplate and ObjectMapper to get custom fields from the response
@@ -30,7 +32,7 @@ public class LiveWeatherService {
 
     public LiveWeatherService(RestTemplateBuilder restTemplateBuilder, ObjectMapper objectMapper) {
 
-        this.restTemplate = restTemplateBuilder.build();
+        this.restTemplate = restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler()).build();
         this.objectMapper = objectMapper;
     }
 
